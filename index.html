@@ -800,6 +800,55 @@ footer { background: var(--bg-2); border-top: 1px solid var(--line); }
 @keyframes load { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
 .vload.done { opacity: 0; visibility: hidden; }
 
+/* ---------- terms of service ---------- */
+
+.tos { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; padding: 16px; }
+.tos .scrim { background: rgba(0, 0, 0, 0.82); }
+.tos-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: min(760px, 100%);
+    height: min(860px, calc(100vh - 32px));
+    background: var(--panel);
+    border: 1px solid var(--line-2);
+    border-radius: var(--r);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+    animation: pop 0.18s ease-out;
+}
+.tos-box::before { content: ""; position: absolute; top: -1px; left: -1px; width: 96px; height: 4px; background: var(--accent); }
+.tos-h { display: flex; align-items: center; gap: 14px; padding: 20px 22px 16px; border-bottom: 1px solid var(--line); }
+.tos-h .die { --s: 34px; }
+.tos-h h2 { margin: 0; font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1; letter-spacing: 0.02em; text-transform: uppercase; }
+.tos-sub { margin-top: 5px; color: var(--muted); font-size: 13px; }
+.tos-h .icon-btn { margin-left: auto; }
+.tos-prog { height: 3px; flex: none; background: var(--line); }
+.tos-prog i { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+.tos-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 22px 26px 30px; color: var(--soft); font-size: 14.5px; line-height: 1.65; }
+.tos-body:focus-visible { outline-offset: -2px; }
+.tos-sum { margin: 0 0 6px; padding: 14px 16px; background: var(--bg-2); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: var(--r); color: var(--text); }
+.tos-sum b { display: block; margin-bottom: 4px; color: var(--accent); font-family: var(--display); font-weight: 800; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; }
+.tos-body h3 { margin: 26px 0 8px; color: var(--text); font-family: var(--display); font-weight: 800; font-size: 19px; line-height: 1.2; letter-spacing: 0.03em; text-transform: uppercase; }
+.tos-body h3 span { margin-right: 6px; color: var(--accent); }
+.tos-body p { margin: 0 0 10px; }
+.tos-body ul { margin: 0 0 10px; padding-left: 20px; }
+.tos-body li { margin-bottom: 5px; }
+.tos-body .caps { font-size: 13px; letter-spacing: 0.01em; text-transform: uppercase; }
+.tos-end { margin: 30px 0 0 !important; padding-top: 16px; border-top: 1px dashed var(--line-2); color: var(--dim); font-size: 13px; text-align: center; }
+.tos-f { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; padding: 14px 22px 16px; background: var(--bg-2); border-top: 1px solid var(--line); }
+.tos-hint { flex: 1 0 100%; display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
+.tos-hint svg { width: 13px; height: 13px; flex: none; }
+.tos-hint:not(.ok) svg { animation: nudge 1.2s ease-in-out infinite; }
+@keyframes nudge { 50% { transform: translateY(3px); } }
+.tos-hint.ok { color: var(--ok); }
+.tos-check { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; font-weight: 600; cursor: pointer; }
+.tos-check input { width: 18px; height: 18px; flex: none; margin: 0; accent-color: var(--accent); cursor: pointer; }
+.tos-check.off { color: var(--dim); cursor: not-allowed; }
+.tos-check.off input { cursor: not-allowed; }
+.tos-f .btn { min-width: 160px; margin-left: auto; }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn.primary:disabled:hover { background: var(--accent); }
+
 /* ---------- responsive ---------- */
 
 @media (max-width: 1020px) {
@@ -844,6 +893,14 @@ footer { background: var(--bg-2); border-top: 1px solid var(--line); }
     .vbtn .lbl { display: none; }
     .vbtn.close .lbl { display: inline; }
     .foot-r { justify-items: start; }
+    .tos { padding: 0; }
+    .tos-box { position: absolute; inset: 0; width: auto; height: auto; border: 0; border-radius: 0; }
+    .tos-h { padding: 16px 16px 12px; }
+    .tos-h .die { --s: 28px; }
+    .tos-h h2 { font-size: 25px; }
+    .tos-body { padding: 18px 16px 24px; font-size: 14px; }
+    .tos-f { padding: 12px 16px 14px; }
+    .tos-f .btn { flex: 1 0 100%; }
 }
 
 @media (hover: none) {
@@ -946,6 +1003,7 @@ footer { background: var(--bg-2); border-top: 1px solid var(--line); }
         <div class="foot-r">
             <span id="footChecked">Not checked yet</span>
             <button class="linkbtn" id="footRandom" type="button">Can't pick? Roll a random game</button>
+            <button class="linkbtn" id="footTerms" type="button">Terms of Service</button>
         </div>
     </div>
 </footer>
@@ -1047,6 +1105,155 @@ footer { background: var(--bg-2); border-top: 1px solid var(--line); }
                 <div class="vload-bar"><i></i></div>
             </div>
         </div>
+    </div>
+</div>
+
+
+<!-- TERMS OF SERVICE (shown on the first visit, and again whenever TOS_VERSION changes) -->
+
+<div class="tos" id="tos" hidden>
+    <div class="scrim"></div>
+    <div class="tos-box" role="dialog" aria-modal="true" aria-labelledby="tosTitle" aria-describedby="tosSub">
+        <header class="tos-h">
+            <span class="die" data-face="5" aria-hidden="true"></span>
+            <div>
+                <h2 id="tosTitle">Terms of Service</h2>
+                <div class="tos-sub" id="tosSub">Last updated November 3, 2026 · Read all the way to the end before you play</div>
+            </div>
+            <button class="icon-btn" id="tosClose" type="button" aria-label="Close terms" hidden>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3l10 10M13 3L3 13"/></svg>
+            </button>
+        </header>
+        <div class="tos-prog" aria-hidden="true"><i id="tosBar"></i></div>
+        <div class="tos-body" id="tosBody" tabindex="0" role="document" aria-label="Terms of Service text">
+
+            <div class="tos-sum">
+                <b>The short version</b>
+                Random Game Loader is a free collection of browser games, offered as is. You use it completely at your own risk. Nothing that happens because you used this website is the Owner's fault. That includes any trouble you get into, any rule you break, anything that goes wrong with your device, account or connection, and anything the games or other websites linked here do. If you don't agree, close this page.
+            </div>
+
+            <h3><span>1.</span>Agreement to these Terms</h3>
+            <p>These Terms of Service ("Terms") are a binding agreement between you and the owner and operator of Random Game Loader (the "Owner," "we," "us" or "our"). "Site" means this website and every page, game, player, feature and piece of content on it or reached through it, plus every copy of it.</p>
+            <p>You agree to be bound by these Terms by doing any of the following: opening, browsing or playing on the Site; using it in any other way; or checking the box and pressing "Accept." Doing so confirms you have read and understood them. If you do not agree to every part of these Terms, you may not use the Site and must leave it now.</p>
+
+            <h3><span>2.</span>What the Site is</h3>
+            <p>The Site is a free, non-commercial hobby collection of browser games. It shows games in a built-in player and lists their update notes. The games themselves are hosted on separate third-party hosting services. The Site does not sell anything, does not have accounts and does not ask for any personal information. Nothing on the Site is professional, legal, medical or any other kind of advice.</p>
+
+            <h3><span>3.</span>Who may use the Site</h3>
+            <p>You may use the Site only if you are legally able to agree to these Terms. If you are a minor, a parent or legal guardian must review and agree to these Terms for you.</p>
+            <p>By using the Site you confirm you have permission to visit websites like this one and to play games on them. That permission must come from the owner of the device you are using and from whoever controls the network you are connected to. If you do not have that permission, do not use the Site.</p>
+
+            <h3><span>4.</span>You are responsible for how, where and when you use the Site</h3>
+            <p>You alone decide whether, how, where and when you use the Site, and on what device and network. You alone are responsible for those choices.</p>
+            <p>You must follow every rule that applies to you, your device, your account and your network. That includes policies, codes of conduct, acceptable use agreements, contracts and laws. It also includes the rules of any organization, institution, employer, household, parent or guardian. The Owner does not know those rules and does not monitor them. The Owner makes no promise that you are allowed to use the Site.</p>
+            <p>If you get in trouble of any kind because you used the Site, that is entirely your responsibility. This covers any penalty from any person or organization, including:</p>
+            <ul>
+                <li>warnings, detentions, suspensions or other discipline;</li>
+                <li>loss of privileges, or loss of access to a device or account;</li>
+                <li>fines or fees;</li>
+                <li>effects on your grades or performance.</li>
+            </ul>
+            <p>The Owner is not responsible for any of it and will not be involved in it.</p>
+
+            <h3><span>5.</span>Third-party software, services and ways of reaching the Site</h3>
+            <p>Some people may use third-party tools to reach, load, change or reroute the Site or its games. These include software, browser extensions, apps, services, networks, mirrors and copies. The Owner does not provide, run, endorse or recommend any of them.</p>
+            <p>If you use any such tool, you do so completely at your own risk. The Owner is not responsible for what the tool does, what it collects, what it breaks, or any consequence of using it.</p>
+            <p>Copies of the Site hosted anywhere other than the Owner's own page are not controlled by the Owner. They may have been changed or may be unsafe.</p>
+
+            <h3><span>6.</span>Games, links and content from others</h3>
+            <p>Each game is a separate website on a third-party hosting service, shown inside the Site's player. Games may load their own content, fonts, sounds and advertisements from other companies. They may change, break or stop working at any time without notice.</p>
+            <p>The Owner does not control third-party hosting services, advertisers or websites. The Owner is not responsible for their content, their availability, their privacy practices, or anything they do. Any dealings you have with an advertiser or other third party are only between you and them.</p>
+
+            <h3><span>7.</span>Your game progress and saved data</h3>
+            <p>The Site and its games may save information in your browser's local storage. This can include what you have played, when you last played, your settings and your game progress. This information stays on your device.</p>
+            <p>Saved data can be lost at any time, and the Owner cannot recover it. For example, it can be lost if:</p>
+            <ul>
+                <li>you clear your browser data, use a private window, or switch devices or browsers;</li>
+                <li>a game is updated or moved;</li>
+                <li>your device or browser removes it.</li>
+            </ul>
+            <p>The Owner is not responsible for any lost progress, items, unlocks, scores, levels or other in-game data. None of it has any real-world value.</p>
+
+            <h3><span>8.</span>Privacy</h3>
+            <p>The Site itself has no accounts. It does not ask for your name, email address or any other personal information, and it does not set tracking cookies of its own.</p>
+            <p>To work, the Site checks the pages that host each game for updates, and it loads fonts from a font service. Like any website, those services may receive technical information such as your IP address and browser type. Some games show advertisements from third-party ad networks. Those networks may use cookies or similar technology under their own privacy policies.</p>
+            <p>Never type personal information into any game or any part of the Site. That includes your full name, address, phone number and passwords.</p>
+
+            <h3><span>9.</span>Acceptable use</h3>
+            <p>You agree that you will not:</p>
+            <ul>
+                <li>use the Site in any way that breaks any law or any rule that applies to you;</li>
+                <li>attack, overload, scrape, hack or interfere with the Site, the games or the services that host them;</li>
+                <li>try to access anything you are not supposed to;</li>
+                <li>cheat in a way that harms other players;</li>
+                <li>harass, bully, threaten or impersonate anyone;</li>
+                <li>upload or send anything harmful, hateful, sexual or illegal;</li>
+                <li>copy, re-host or sell the Site or its games, or claim them as your own;</li>
+                <li>help anyone else do any of these things.</li>
+            </ul>
+            <p>The Owner may block or limit anyone's access to the Site at any time, for any reason.</p>
+
+            <h3><span>10.</span>Health and safety</h3>
+            <p>Some games contain flashing lights, fast motion, loud sounds and patterns. These may trigger seizures in people with photosensitive epilepsy, or cause dizziness, eye strain or discomfort. If you or anyone in your family has had seizures or epilepsy, talk to a doctor before playing.</p>
+            <p>Stop playing right away if you feel dizzy or sick, or notice vision changes, muscle twitching or any other discomfort. Take regular breaks and keep the volume at a safe level. Don't play when you should be paying attention to something else, such as your surroundings or your responsibilities.</p>
+
+            <h3><span>11.</span>Availability, changes and updates</h3>
+            <p>The Site is run as a hobby. The Owner may add, change, update, move, remove or stop any game, any feature or the whole Site at any time, with or without notice. The Owner has no duty to keep the Site online, fix it, update it or support it.</p>
+            <p>Update notes, badges, "new," "trending" and other labels are for fun only. They may be wrong, late or out of date.</p>
+
+            <h3><span>12.</span>No warranties</h3>
+            <p class="caps">The Site and everything on it or reached through it is provided "as is" and "as available," with all faults and without warranties of any kind. To the fullest extent allowed by law, the Owner disclaims all warranties, whether express, implied or statutory. These include warranties of merchantability, fitness for a particular purpose, title and non-infringement. The Owner also makes no warranty that the Site will be safe, secure, accurate, uninterrupted, error-free or free of harmful components, or that it is allowed on your device or network.</p>
+
+            <h3><span>13.</span>Limitation of liability</h3>
+            <p class="caps">To the fullest extent allowed by law, the Owner will not be liable to you or anyone else for any loss or damage of any kind that comes from or is connected to the Site or these Terms. This applies however the loss is caused, and whether or not the Owner was told it could happen. It includes:</p>
+            <ul class="caps">
+                <li>direct, indirect, incidental, special, consequential, exemplary or punitive damages;</li>
+                <li>disciplinary action or other consequences from any person or organization;</li>
+                <li>loss of data, progress, time, access, privileges or opportunities;</li>
+                <li>damage to any device, account or software;</li>
+                <li>anything caused by third-party games, services, advertisers, software or websites.</li>
+            </ul>
+            <p class="caps">If any liability cannot be excluded, the Owner's total liability for all claims is limited to the amount you paid to use the Site, which is zero (US $0.00).</p>
+
+            <h3><span>14.</span>Assumption of risk</h3>
+            <p>You understand and accept every risk of using the Site, including every risk described in these Terms. You use the Site voluntarily and entirely at your own risk.</p>
+
+            <h3><span>15.</span>Release and indemnity</h3>
+            <p>To the fullest extent allowed by law, you release the Owner from all claims, demands and losses of any kind connected to the Site.</p>
+            <p>You also agree to defend, indemnify and hold harmless the Owner against any claim made by anyone, including any organization, institution, employer, parent or guardian. This covers any demand, loss, damage, cost or expense, including reasonable legal fees, that comes from or is connected to:</p>
+            <ul>
+                <li>your use of the Site;</li>
+                <li>your choice of device, network or third-party software;</li>
+                <li>your breaking these Terms or any rule or law.</li>
+            </ul>
+
+            <h3><span>16.</span>Ownership</h3>
+            <p>The games, artwork, names and other content belong to their creators. Using the Site does not make you the owner of anything on it, and does not give you any right to copy, sell or re-host the Site or its games. If you believe something on the Site uses your work without permission, contact the Owner through the account that hosts the Site, and it will be reviewed.</p>
+
+            <h3><span>17.</span>Changes to these Terms</h3>
+            <p>The Owner may change these Terms at any time. When they change, the "Last updated" date at the top will change, and you may be asked to read and accept them again. Using the Site after a change means you accept the new Terms.</p>
+
+            <h3><span>18.</span>Ending your use</h3>
+            <p>You can stop using the Site at any time. The Owner may suspend or end your access at any time, for any reason or no reason. Some sections keep applying after you stop using the Site: Sections 4, 5, 6, 7, 12, 13, 14, 15, 16 and 19.</p>
+
+            <h3><span>19.</span>General</h3>
+            <p>These Terms are the whole agreement between you and the Owner about the Site.</p>
+            <p>If any part of these Terms is found to be unenforceable, that part will be limited or removed only as much as needed, and the rest stays in full effect. If the Owner does not enforce part of these Terms, the Owner keeps the right to enforce it later.</p>
+            <p>You may not transfer your rights under these Terms. Headings are for convenience only. Nothing in these Terms limits a right you have that the law says cannot be limited. In that case, these Terms apply as far as the law allows.</p>
+
+            <h3><span>20.</span>In plain English</h3>
+            <p>Using this website is your choice and your responsibility. Nothing that happens because of this website is the Owner's fault. That includes trouble with anyone, lost progress, a broken device, and anything a game or another website does.</p>
+
+            <p class="tos-end">End of the Terms of Service</p>
+        </div>
+        <footer class="tos-f">
+            <div class="tos-hint" id="tosHint" aria-live="polite"></div>
+            <label class="tos-check off" id="tosCheckWrap">
+                <input type="checkbox" id="tosCheck" disabled>
+                <span>I have read and agree to the Terms of Service</span>
+            </label>
+            <button class="btn primary" id="tosAccept" type="button" disabled>Accept</button>
+        </footer>
     </div>
 </div>
 
@@ -1772,7 +1979,7 @@ function lockScroll() {
 }
 
 function unlockScroll() {
-    if (!viewer.classList.contains("open") && drawer.hidden && roll.hidden) document.body.style.overflow = "";
+    if (!viewer.classList.contains("open") && drawer.hidden && roll.hidden && tos.hidden) document.body.style.overflow = "";
 }
 
 function openNotes(id, idx = 0) {
@@ -1985,6 +2192,71 @@ async function toggleFullscreen() {
 }
 
 
+/* ---------- terms of service ---------- */
+
+/* Bump TOS_VERSION whenever the terms text changes - everyone has to read and accept again. */
+const TOS_VERSION = "2026-11-03";
+const tos = $("#tos");
+const tosBody = $("#tosBody");
+const tosCheck = $("#tosCheck");
+const tosAccept = $("#tosAccept");
+let tosRead = false;   // scrolled to the bottom
+let tosReview = false; // opened again from the footer after accepting
+
+const ICON_DOWN = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M8 2v11M3.5 8.5L8 13l4.5-4.5"/></svg>';
+const ICON_CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2.5 8.5l3.5 3.5 7.5-8"/></svg>';
+
+function tosAccepted() {
+    return !!(store.tos && store.tos.v === TOS_VERSION);
+}
+
+function paintTos() {
+    const hint = $("#tosHint");
+    hint.classList.toggle("ok", tosRead);
+    hint.innerHTML = tosReview && store.tos ? `${ICON_CHECK}You accepted these terms on ${esc(fmtDate(store.tos.at, true))}.`
+        : tosRead ? `${ICON_CHECK}You reached the end. Check the box to continue.`
+        : `${ICON_DOWN}Scroll to the bottom of the terms to continue.`;
+    tosCheck.disabled = !tosRead;
+    $("#tosCheckWrap").classList.toggle("off", !tosRead);
+    tosAccept.disabled = !tosReview && !(tosRead && tosCheck.checked);
+}
+
+function tosScroll() {
+    const max = tosBody.scrollHeight - tosBody.clientHeight;
+    $("#tosBar").style.transform = `scaleX(${max > 0 ? Math.min(1, tosBody.scrollTop / max) : 1})`;
+    if (!tosRead && (max <= 0 || tosBody.scrollTop >= max - 12)) {
+        tosRead = true;
+        paintTos();
+    }
+}
+
+function openTos(review) {
+    tosReview = !!review;
+    tosRead = tosReview;
+    lastFocus = document.activeElement;
+    tosCheck.checked = false;
+    $("#tosCheckWrap").hidden = tosReview;
+    $("#tosClose").hidden = !tosReview;
+    tosAccept.textContent = tosReview ? "Close" : "Accept";
+    /* Everything behind the terms is out of reach (no clicks, no tabbing) until they're closed. */
+    for (const el of document.body.children) if (el !== tos && el.tagName !== "SCRIPT") el.inert = true;
+    tos.hidden = false;
+    lockScroll();
+    tosBody.scrollTop = 0;
+    paintTos();
+    tosScroll();
+    tosBody.focus();
+}
+
+function closeTos() {
+    if (tos.hidden) return;
+    tos.hidden = true;
+    for (const el of document.body.children) el.inert = false;
+    unlockScroll();
+    if (tosReview && lastFocus && document.contains(lastFocus)) lastFocus.focus();
+}
+
+
 /* ---------- events ---------- */
 
 document.addEventListener("click", e => {
@@ -2041,6 +2313,20 @@ $("#rollAgain").addEventListener("click", doRoll);
 $("#rollPlay").addEventListener("click", () => { if (rollTarget) openGame(rollTarget.id, $("#randomButton")); });
 $("#dwPlay").addEventListener("click", () => { if (drawerGame) openGame(drawerGame.id, lastFocus); });
 
+tosBody.addEventListener("scroll", tosScroll, { passive: true });
+window.addEventListener("resize", () => { if (!tos.hidden) tosScroll(); });
+tosCheck.addEventListener("change", paintTos);
+tosAccept.addEventListener("click", () => {
+    if (!tosReview) {
+        if (!tosRead || !tosCheck.checked) return;
+        store.tos = { v: TOS_VERSION, at: Date.now() };
+        save();
+    }
+    closeTos();
+});
+$("#tosClose").addEventListener("click", closeTos);
+$("#footTerms").addEventListener("click", () => openTos(true));
+
 $("#notesButton").addEventListener("click", () => { if (currentGame) openNotes(currentGame.id, 0); });
 $("#reloadButton").addEventListener("click", reloadGame);
 closeButton.addEventListener("click", closeGame);
@@ -2055,10 +2341,11 @@ document.addEventListener("fullscreenchange", () => {
     $("#fullscreenLabel").textContent = document.fullscreenElement ? "Exit fullscreen" : "Fullscreen";
 });
 
-/* Escape closes the patch notes and the random picker only - never the game viewer. */
+/* Escape closes the patch notes, the random picker and the terms (only when re-reading them) - never the game viewer. */
 document.addEventListener("keydown", e => {
     if (e.key !== "Escape") return;
-    if (!roll.hidden) closeRoll();
+    if (!tos.hidden) { if (tosReview) closeTos(); }
+    else if (!roll.hidden) closeRoll();
     else if (!drawer.hidden) closeNotes();
 });
 
@@ -2093,6 +2380,7 @@ function boot() {
     setInterval(() => {
         if (!document.hidden && !viewer.classList.contains("open")) checkAll();
     }, 10 * 60 * 1000);
+    if (!tosAccepted()) openTos(false);
 }
 
 window.addEventListener("DOMContentLoaded", boot);
