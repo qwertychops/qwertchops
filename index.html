@@ -1069,12 +1069,14 @@ footer { background: var(--bg-2); border-top: 1px solid var(--line); }
  *   <meta name="rgl:headline" content="Big update">  <meta name="rgl:notes" content="First note|Second note">
  * `known` = the newest notes we knew about when this page was made. Shown until the live check answers,
  * or if a game can't be reached. The live check always wins.
+ * `moved` = an upload that only moved the same files to a new link. `lm` is that upload's Last-Modified,
+ * `was` the real last update before it, so the move doesn't show up as "just updated".
  */
 const GAMES = [
     {
         id: "pixel-survivor",
         title: "Pixel Survivor Arena",
-        url: "https://schoolmaster-hue.github.io/classroom.google.com/",
+        url: "https://shsidnsjd.github.io/vids.google.com/",
         genres: ["Action", "Survival", "Pixel art"],
         hot: 30,
         accent: "#ff2a6d",
@@ -1099,7 +1101,7 @@ const GAMES = [
     {
         id: "emoji-royale-2",
         title: "Emoji Royale 2",
-        url: "https://schoolmaster-hue.github.io/google/",
+        url: "https://shsidnsjd.github.io/meet.google.com/",
         genres: ["Strategy", "Cards"],
         hot: 20,
         accent: "#3498db",
@@ -1118,12 +1120,12 @@ const GAMES = [
                 "Sudden Death in Overtime: In Overtime, taking a single tower ends the match instantly with a sudden-death victory."
             ]
         }],
-        knownLM: "Tue, 13 Oct 2026 00:28:06 GMT"
+        moved: { lm: "Tue, 03 Nov 2026 03:32:54 GMT", was: "Tue, 13 Oct 2026 00:28:06 GMT" }
     },
     {
         id: "paper-conquest",
         title: "Paper Conquest: World Tour",
-        url: "https://schoolmaster-hue.github.io/drive.google.com/",
+        url: "https://shsidnsjd.github.io/calendar.google.com/",
         genres: ["Arcade", "Territory"],
         hot: 10,
         accent: "#00b894",
@@ -1132,7 +1134,7 @@ const GAMES = [
         wide: "pc_wide",
         log: "none",
         known: [],
-        knownLM: "Thu, 08 Oct 2026 03:05:44 GMT"
+        moved: { lm: "Tue, 03 Nov 2026 03:34:10 GMT", was: "Thu, 08 Oct 2026 03:05:44 GMT" }
     },
     {
         id: "daspuras-ai",
@@ -1416,13 +1418,14 @@ const img = key => (key && IMG[key]) || "";
 function info(g) {
     const c = store.cache[g.id];
     const logs = (c && c.logs && c.logs.length) ? c.logs : (g.known || []);
-    const lmStr = (c && c.lm) || g.knownLM || "";
-    const lm = lmStr ? Date.parse(lmStr) : NaN;
+    const lmStr = (c && c.lm) || (g.moved && g.moved.lm) || "";
+    const movedOnly = !!(g.moved && lmStr === g.moved.lm);
+    const lm = lmStr ? Date.parse(movedOnly ? g.moved.was : lmStr) : NaN;
     const latest = logs[0] || null;
     const logMs = latest ? parseDate(latest.date) : NaN;
     const updated = Math.max(isNaN(lm) ? 0 : lm, isNaN(logMs) ? 0 : logMs);
     const key = latest ? (latest.version || latest.date) + "|" + clean(latest.headline).slice(0, 40) : "";
-    return { logs, latest, lm, lmStr, logMs, updated, key };
+    return { logs, latest, lm, lmStr, movedOnly, logMs, updated, key };
 }
 
 /* 'new' = new patch notes you haven't played yet, 'updated' = new upload without notes, '' = nothing. */
@@ -1432,7 +1435,7 @@ function freshness(g, I = info(g)) {
     if (I.latest && !isNaN(I.logMs) && now - I.logMs < 14 * DAY) {
         if (seen ? seen.k !== I.key : now - I.logMs < 7 * DAY) return "new";
     }
-    if (!isNaN(I.lm) && now - I.lm < 3 * DAY && (!seen || seen.lm !== I.lmStr)) return "updated";
+    if (!I.movedOnly && !isNaN(I.lm) && now - I.lm < 3 * DAY && (!seen || seen.lm !== I.lmStr)) return "updated";
     return "";
 }
 
